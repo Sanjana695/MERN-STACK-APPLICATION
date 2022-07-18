@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
+import { getToken } from "../actions/index";
+import getTokenValue from "../reducers/token";
+import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Login() {
+  const token = useSelector((state) => state.getTokenValue);
+  console.log("token is" + token);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -24,6 +30,7 @@ function Login() {
     if (res.status === 400 || !data) {
       window.alert("Invalid Credentials!");
     } else {
+      dispatch(getToken(data.token));
       window.alert("Registeration Successfully!");
       navigate("/");
     }

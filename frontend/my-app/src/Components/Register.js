@@ -7,10 +7,11 @@ function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [email, setEmail] = useState();
 
   const postData = async (e) => {
     e.preventDefault();
-    let data = { username, password };
+    let data = { username, email, password };
     console.log(data);
     const res = await fetch("/signup", {
       method: "POST",
@@ -38,6 +39,16 @@ function Register() {
             placeholder="Enter Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
 

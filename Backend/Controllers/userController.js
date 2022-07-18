@@ -4,8 +4,8 @@ const authenticate = require("../Middlewares/authenticate");
 const jwt = require("jsonwebtoken");
 
 const signup = async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { username, email, password } = req.body;
+  if (!username || !email || !password) {
     return res.status(422);
   }
   try {
@@ -14,7 +14,7 @@ const signup = async (req, res) => {
     if (userExist) {
       return res.status(422).json({ error: "User Already Exist!" });
     }
-    const user = new User({ username, password });
+    const user = new User({ username, email, password });
     const userRegister = await user.save();
     if (userRegister) {
       res.status(201).json({ msg: "User Registered Successfulyy!" });
@@ -26,32 +26,27 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    let token;
     const { username, password } = req.body;
     if (!username || !password) {
       res.status(404).json({ msg: "Please fill field!" });
     }
     const userLogin = await User.findOne({ username: username });
-
+    console.log("In login" + userLogin);
     if (userLogin) {
       //compare password with your registered password.
-      const isMatch = await bcrypt.compare(password, userLogin.password);
-      //now generate token and stored it in database
-      token = await userLogin.generateAuthToken();
-      console.log(token);
-
-      //name of cookie and value
-      res.cookie("jwtoken", token, {
-        //add 30 days in curerrent  date for expire the token
-        expires: new Date(Date.now() + 25892000000),
-        httpOnly: true,
+      bcrypt.compare(password, userLogin.password, (err, validated) => {
+        if (validated) {
+          const token = jwt.sign(
+            { username: userLogin.username },
+            process.env.SECRET_KEY,
+            { expiresIn: 30 * 60 }
+          );
+          res.status(200).json({ token, userLogin });
+        } else {
+          res.status(400).json({ msg: "Invalid Credentials" });
+        }
       });
-
-      if (!isMatch) {
-        res.status(400).json({ msg: "Invalid Credentials" });
-      } else {
-        res.json({ msg: "User Login Successfully!" });
-      }
+      //now generate token and stored it in database
     } else {
       res.status(400).json({ msg: "Invalid Credentials" });
     }
@@ -60,9 +55,25 @@ const login = async (req, res) => {
   }
 };
 
-const userList = (req, res) => {
-  //rootUser is present in middleware, only login user has authority to access this page
-  res.send(req.rootUser);
+//get all user
+const userList = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.send(error);
+  }
 };
 
-module.exports = { signup, login, userList };
+//delete user
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findByIdAndDelete(id);
+  if (user) {
+    res.status(200).json({ user });
+  } else {
+    res.status(401).send({ msg: "User Does not exist!" });
+  }
+};
+
+module.exports = { signup, login, userList, deleteUser };

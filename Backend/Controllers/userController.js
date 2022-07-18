@@ -1,11 +1,7 @@
 const User = require("../Models/User");
 const bcrypt = require("bcrypt");
+const authenticate = require("../Middlewares/authenticate");
 const jwt = require("jsonwebtoken");
-
-const create = (req, res) => {
-  console.log(req.body);
-  res.render("Create");
-};
 
 const signup = async (req, res) => {
   const { username, password } = req.body;
@@ -64,4 +60,9 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { create, signup, login };
+const userList = (req, res) => {
+  //rootUser is present in middleware, only login user has authority to access this page
+  res.send(req.rootUser);
+};
+
+module.exports = { signup, login, userList };

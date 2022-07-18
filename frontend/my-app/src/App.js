@@ -1,7 +1,6 @@
 import Home from "./Components/Home";
 import TopNavbar from "./layout/TopNavbar";
-import AddProduct from "./Components/AddProduct";
-import Product from "./Components/Product";
+import UserList from "./Components/UserList";
 import { Route, Routes } from "react-router-dom";
 import Register from "./Components/Register";
 import Login from "./Components/Login";
@@ -13,9 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="/addproduct" element={<AddProduct />} />
-
-        <Route path="/product" element={<Product />} />
+        <Route path="/userlist" element={<UserList />} />
 
         <Route path="/login" element={<Login />} />
 

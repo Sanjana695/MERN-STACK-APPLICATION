@@ -19,8 +19,7 @@ function TopNavbar() {
               <NavLink to="/" active>
                 Home
               </NavLink>
-              <NavLink to="/addproduct">Add Product</NavLink>
-              <NavLink to="/product">Product List</NavLink>
+              <NavLink to="/userlist">User List</NavLink>
               <NavLink to="/signup">SignUp</NavLink>
               <NavLink to="/login">Login</NavLink>
               <NavLink to="/logout">Logout</NavLink>

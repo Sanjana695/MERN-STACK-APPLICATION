@@ -1,15 +1,36 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { NavLink, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Register() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
+  const postData = async (e) => {
+    e.preventDefault();
+    let data = { username, password };
+    console.log(data);
+    const res = await fetch("/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const resp = await res.json();
+    if (resp.status === 422 || !resp) {
+      window.alert("Invalid Registration!");
+    } else {
+      window.alert("Registered Successfully!");
+      navigate("/login");
+    }
+  };
   return (
     <div className="container">
       <h1 className="text-center mt-5">Sign Up</h1>
-      <Form>
+      <Form method="post">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
           <Form.Control
@@ -30,13 +51,11 @@ function Register() {
           />
         </Form.Group>
 
-        <Button
-          variant="primary"
-          type="submit"
-          className="align-items-center justify-content-center"
-        >
-          Register
-        </Button>
+        <NavLink to="/login">
+          <Button variant="primary" type="submit" onClick={postData}>
+            Register
+          </Button>
+        </NavLink>
       </Form>
     </div>
   );

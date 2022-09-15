@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function UserList() {
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
+
   const token = useSelector((state) => state.getTokenValue);
   console.log("in token", token);
 
@@ -34,6 +34,7 @@ function UserList() {
       console.log(err);
     }
   };
+
   return (
     <>
       <Table striped bordered hover>
@@ -55,8 +56,11 @@ function UserList() {
                   <td>{itm.email}</td>
                   <td>{itm.username}</td>
                   <td>
-                    <Button>Update</Button>
+                    <NavLink to={`/updateuser/${itm._id}`}>
+                      <Button>Update</Button>
+                    </NavLink>
                     <Button
+                      className="btn btn-danger"
                       onClick={() => {
                         deleteUser(itm._id);
                       }}

@@ -76,4 +76,39 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, userList, deleteUser };
+//update user
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateuser = await User.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+
+    res.status(200).json(updateuser);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
+
+//get user by id
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById({ _id: id });
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(500).json({ msg: err });
+    }
+  } catch (err) {
+    res.status(500).json({ msg: err });
+  }
+};
+module.exports = {
+  signup,
+  login,
+  userList,
+  deleteUser,
+  updateUser,
+  getUserById,
+};

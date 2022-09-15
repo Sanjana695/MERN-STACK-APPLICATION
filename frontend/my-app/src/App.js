@@ -4,6 +4,7 @@ import UserList from "./Components/UserList";
 import { Route, Routes } from "react-router-dom";
 import Register from "./Components/Register";
 import Login from "./Components/Login";
+import UpdateUser from "./Components/UpdateUser";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/signup" element={<Register />} />
+
+        <Route path="/updateuser/:id" element={<UpdateUser />} />
 
         <Route path="/logout" element={<Login />} />
       </Routes>

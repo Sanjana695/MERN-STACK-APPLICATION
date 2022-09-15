@@ -25,11 +25,17 @@ app.delete(
   authenticate.authenticate,
   userController.deleteUser
 );
+app.patch(
+  "/updateUser/:id",
+  authenticate.authenticate,
+  userController.updateUser
+);
+app.get("/getId/:id", userController.getUserById);
 
 app.use("*", function (req, res) {
   res.status(404).json({ msg: "NOT FOUND" });
 });
 
 app.listen(PORT, function () {
-  console.log(`listening at port ${PORT}`);
+  console.log(`listening at port 3000`);
 });

@@ -5,6 +5,7 @@ import { getToken } from "../actions/index";
 import getTokenValue from "../reducers/token";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Zoom, Fade } from "react-reveal";
 
 function Login() {
   const token = useSelector((state) => state.getTokenValue);
@@ -38,40 +39,48 @@ function Login() {
   return (
     <>
       <div className="container">
-        <h1 className="text-center mt-5">Login</h1>
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail" method="POST">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Enter Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-
-          <NavLink to="/">
-            {" "}
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={LoginUser}
-              className="align-items-center justify-content-center"
+        <Zoom>
+          <h1 className="text-center mt-5">Login</h1>
+        </Zoom>
+        <Fade>
+          <Form>
+            <Form.Group
+              className="mb-3"
+              controlId="formBasicEmail"
+              method="POST"
             >
-              Login
-            </Button>
-          </NavLink>
-        </Form>
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Enter Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+
+            <NavLink to="/">
+              {" "}
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={LoginUser}
+                className="align-items-center justify-content-center"
+              >
+                Login
+              </Button>
+            </NavLink>
+          </Form>
+        </Fade>
       </div>
     </>
   );
